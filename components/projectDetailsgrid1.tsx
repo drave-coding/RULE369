@@ -1,20 +1,17 @@
 "use client";
 
-import React from 'react';
-import DataCard from '@/components/DataCard';
+import DataCard from "@/components/DataCard";
 
 interface ProjectDetailsGrid1Props {
-  projectId: string | string[] | undefined; // Accept projectId as string or array
+  project: { projectName: string; description: string }; // Define project type with only necessary fields
 }
 
-const ProjectDetailsGrid1: React.FC<ProjectDetailsGrid1Props> = ({ projectId }) => {
-  // Handle projectId being an array or undefined
-  const projectTitle = Array.isArray(projectId) ? projectId[0] : projectId || "Unknown";
-
+const ProjectDetailsGrid1: React.FC<ProjectDetailsGrid1Props> = ({ project }) => {
   return (
-    <div className="grid grid-cols-1 -mt-12 h-40">
-      <DataCard title={`Project ${projectTitle}`}>
-        <p>This section will include the description of the project</p>
+    <div className="grid grid-cols-1 -mt-8 h-30">
+      <DataCard >
+        <strong>{project.projectName}</strong>
+        <p>{project.description}</p>
       </DataCard>
     </div>
   );

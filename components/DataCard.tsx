@@ -9,15 +9,12 @@ interface DataCardProps {
   children?: ReactNode; // Children to allow custom content inside the card
 }
  
-const DataCard = ({ title = "Data", children }: DataCardProps) => {
+const DataCard = ({ title, children }: DataCardProps) => {
   return (
     <Card className="hover:shadow-lg transition-shadow">
-      <CardHeader>
-        <CardTitle>{title}</CardTitle>
+      <CardHeader title={title}>
+      {children ? children : "Content"}
       </CardHeader>
-      <CardContent>
-        {children ? children : "Content"}
-      </CardContent>
     </Card>
   );
 };

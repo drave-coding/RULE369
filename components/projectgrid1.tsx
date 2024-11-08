@@ -18,7 +18,7 @@ const ProjectGrid1 = () => {
   ];
 
   return (
-    <div className="flex gap-4 -mt-12">
+    <div className="flex gap-4 -mt-8">
       {/* Left side: Fixed height for the card layout */}
       <div className="grid grid-cols-3 gap-2 flex-1 h-60"> {/* Fixed height set here */}
         <DataCard title="Content 1" />
