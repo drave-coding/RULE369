@@ -16,13 +16,22 @@ import {
 
 interface DatePickerWithRangeProps extends React.HTMLAttributes<HTMLDivElement> {
   onDateChange: (range: DateRange) => void; // Accept onDateChange prop
+  selectedRange?: DateRange; // Add selectedRange as an optional prop
 }
 
 export function DatePickerWithRange({
   className,
   onDateChange,
+  selectedRange, // Accept selectedRange prop
 }: DatePickerWithRangeProps) {
-  const [date, setDate] = React.useState<DateRange | undefined>(undefined); // Initialize as undefined
+  const [date, setDate] = React.useState<DateRange | undefined>(selectedRange); // Initialize with selectedRange if available
+
+  // Whenever the selectedRange prop changes, update the local state
+  React.useEffect(() => {
+    if (selectedRange !== undefined) {
+      setDate(selectedRange);
+    }
+  }, [selectedRange]);
 
   const handleDateChange: SelectRangeEventHandler = (range) => {
     if (range && range.from && range.to) { // Ensure range is defined

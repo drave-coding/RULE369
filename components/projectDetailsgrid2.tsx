@@ -5,18 +5,26 @@ import { ScrollArea } from "@/components/ui/scroll-area"; // Ensure this is impo
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
-import { Trash2 } from "lucide-react"; // Import an icon for deletion
+import { Trash2,Upload } from "lucide-react"; // Import an icon for deletion
 import { cn } from "@/lib/utils";
+import { Instagram, Facebook, Linkedin } from "lucide-react";
 
 interface ProjectDetailsGrid2Props {
   project: {
     industry: string;
     transaction: string;
+    investment: number;
     dateRange: {
       from: string;
       to: string;
     };
     competitors: { name: string; link: string; _id: string }[];
+    socialLinks: {
+      instagram: string | null;
+      facebook: string | null;
+      linkedin: string | null;
+      drive: string | null;
+    };
   };
 }
 
@@ -34,6 +42,35 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({ project }) =>
       setNewReminder(""); // Clear the input after adding
     }
   };
+  // Helper function to render social media links
+  // Helper function to render social media links
+  const renderSocialLinks = () => {
+    const socialIcons = [
+      { name: "Instagram", icon: <Instagram />, link: project.socialLinks.instagram },
+      { name: "Facebook", icon: <Facebook />, link: project.socialLinks.facebook },
+      { name: "LinkedIn", icon: <Linkedin />, link: project.socialLinks.linkedin },
+      { name: "Google Drive", icon: <Upload />, link: project.socialLinks.drive }, // Added Google Drive icon
+    ];
+
+    return socialIcons.map((social, index) => {
+      if (social.link) {
+        return (
+          <a
+            key={index}
+            href={social.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className={cn(
+              "w-10 h-10 flex items-center justify-center bg-gray-200 text-black-600 hover:bg-violet-200 hover:text-violet-800 rounded-full"
+            )}
+          >
+            {social.icon}
+          </a>
+        );
+      }
+      return null; // If the link is null, don't render anything
+    });
+  };
 
   return (
     <div className="flex gap-4 pt-8"> 
@@ -42,6 +79,9 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({ project }) =>
         <DataCard>
           <p><strong>Industry:</strong> {project.industry}</p>
           <p><strong>Transaction:</strong> {project.transaction}</p>
+          <p><strong>Investment:</strong> {project.investment} Rs</p>
+          
+
           <p>
             <strong>Date Range:</strong> 
             {` From ${new Date(project.dateRange.from).toLocaleDateString()} to ${new Date(project.dateRange.to).toLocaleDateString()}`}
@@ -70,7 +110,12 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({ project }) =>
           </a>
         ))}
       </div>
+      <div className="flex gap-4 pt-8">
+        {renderSocialLinks()} 
+      </div>
     </DataCard>
+    
+    
   </div>
           <div className="grid h-48 flex-1"> 
             <DataCard title="Card 2">

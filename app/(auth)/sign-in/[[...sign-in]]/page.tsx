@@ -7,8 +7,8 @@ export default function Page() {
     <div className='min-h-screen flex items-center justify-center '>
       <div className='flex flex-col items-center text-center space-y-4'>
         {/* White circle around the logo */}
-        <div className='relative w-32 h-32 rounded-full bg-white flex items-center justify-center mb-3'>
-          <Image src="/logo.png" alt='Logo' height={100} width={100}  />
+        <div className='relative w-32 h-32   flex items-center justify-center mb-3'>
+          <Image className="rounded-full" src="/logo.png" alt='Logo' height={400} width={400}  />
         </div>
 
         <ClerkLoaded>

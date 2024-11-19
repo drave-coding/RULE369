@@ -8,6 +8,8 @@ import React, { useEffect, useState } from 'react';
 import axios from '@/lib/axios'; // Use your custom Axios instance
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useUser } from "@clerk/nextjs"; // Import useUser
+import { Button } from '@/components/ui/button';
+import ProjectTopSection from '@/components/projectTopSection';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Get the project ID from the URL
@@ -20,7 +22,7 @@ const ProjectDetails: React.FC = () => {
       try {
         const response = await axios.get(`/projectDetails/${id}`); // Make sure this matches your API route
         const projectData = response.data;
-
+        console.log(projectData)
         // Check if the userId from the project matches the authenticated user's ID
         if (projectData.userId !== user?.id) {
           setProject(null); // Set project to null if not authorized
@@ -46,7 +48,8 @@ const ProjectDetails: React.FC = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto w-full pl-10 pr-10 pb-10 pt-3">
-      <TopSection />
+       <ProjectTopSection projectId={id} />
+       
       {project ? (
         <>
           <ProjectDetailsGrid1 project={{ projectName: project.projectName, description: project.description }} />
@@ -55,7 +58,10 @@ const ProjectDetails: React.FC = () => {
               industry: project.industry,
               transaction: project.transaction,
               dateRange: project.dateRange,
-              competitors: project.competitors
+              competitors: project.competitors,
+              investment: project.investment,
+              socialLinks: project.socialLinks,
+              
             }} 
           />
         </>

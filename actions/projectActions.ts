@@ -6,13 +6,20 @@ export const storeProjectData = async (projectData: any) => {
 
   try {
     const project = new Project({
-      userId: projectData.userId, // Use the user ID passed from the frontend
+      userId: projectData.userId,
       projectName: projectData.projectName,
       description: projectData.description,
       industry: projectData.industry,
       transaction: projectData.transaction,
       dateRange: projectData.dateRange,
       competitors: projectData.competitors,
+      investment: projectData.investment, // New investment field
+      socialLinks: {                      // New social links fields with null defaults
+        instagram: projectData.instagram || null,
+        facebook: projectData.facebook || null,
+        linkedin: projectData.linkedin || null,
+        drive: projectData.drive || null,
+      },
     });
     await project.save();
     return project;
@@ -20,7 +27,6 @@ export const storeProjectData = async (projectData: any) => {
     throw new Error("Error storing project data: " + error.message);
   }
 };
-
 
 
 export const getProjectData = async (projectId: string) => {
@@ -32,3 +38,27 @@ export const getProjectData = async (projectId: string) => {
   }
 }
 
+
+// New delete function to delete the project
+export const deleteProjectData = async (projectId: string) => {
+  try {
+    const project = await Project.findByIdAndDelete(projectId).exec();
+    return project; // Return the deleted project
+  } catch (error: any) {
+    throw new Error("Error deleting project data: " + error.message);
+  }
+};
+
+
+
+
+//update project data
+export const updateProjectData = async (projectId: string, updatedData: any) => {
+  try {
+    // Update the project in the database
+    const updatedProject = await Project.findByIdAndUpdate(projectId, updatedData, { new: true }).exec();
+    return updatedProject; // Return the updated project data
+  } catch (error: any) {
+    throw new Error("Error updating project data: " + error.message);
+  }
+};

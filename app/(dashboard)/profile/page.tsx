@@ -4,7 +4,7 @@ import React from 'react'
 const ProjectSummary = () => {
   return (
     <div>
-      <WorkInProgress label='Profile'/>
+      <WorkInProgress label='New Profile'/>
     </div>
     
   )

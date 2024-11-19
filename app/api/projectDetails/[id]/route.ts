@@ -26,3 +26,5 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     return NextResponse.json({ error: "Failed to fetch project: " + error.message }, { status: 500 });
   }
 };
+
+

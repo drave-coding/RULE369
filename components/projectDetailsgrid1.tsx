@@ -8,7 +8,7 @@ interface ProjectDetailsGrid1Props {
 
 const ProjectDetailsGrid1: React.FC<ProjectDetailsGrid1Props> = ({ project }) => {
   return (
-    <div className="grid grid-cols-1 -mt-8 h-30">
+    <div className="grid grid-cols-1 mt-2 h-30">
       <DataCard >
         <strong>{project.projectName}</strong>
         <p>{project.description}</p>

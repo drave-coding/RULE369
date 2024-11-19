@@ -1,4 +1,3 @@
-// models/Project.ts
 import mongoose, { Schema, Document } from 'mongoose';
 
 interface IProject extends Document {
@@ -15,6 +14,13 @@ interface IProject extends Document {
     name: string;
     link: string;
   }[];
+  investment: number; // New investment field
+  socialLinks: {      // Updated social links fields (required but can be null)
+    instagram: string | null;
+    facebook: string | null;
+    linkedin: string | null;
+    drive: string | null;
+  };
 }
 
 const ProjectSchema: Schema = new Schema({
@@ -33,6 +39,13 @@ const ProjectSchema: Schema = new Schema({
       link: { type: String, required: true },
     },
   ],
+  investment: { type: Number, required: true }, // New investment field
+  socialLinks: {                                // Updated social links fields
+    instagram: { type: String, default: null },
+    facebook: { type: String, default: null },
+    linkedin: { type: String, default: null },
+    drive: { type: String, default: null },
+  },
 });
 
 const Project = mongoose.models.Project || mongoose.model<IProject>('Project', ProjectSchema);

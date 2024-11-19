@@ -25,6 +25,13 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleSubmit }) => {
     to: undefined,
   });
   const [competitors, setCompetitors] = useState<{ name: string; link: string }[]>([{ name: '', link: '' }]);
+  const [investment, setInvestment] = useState<string>('');
+  const [socialLinks, setSocialLinks] = useState({
+    instagram: '',
+    facebook: '',
+    linkedin: '',
+    drive: '',
+  });
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -49,11 +56,23 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleSubmit }) => {
       setCompetitors(newCompetitors);
     }
   };
+  const handleSocialLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSocialLinks((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const isSocialLinkValid = (url: string, prefix: string) =>
+    url === '' || url.startsWith(prefix);
 
   const isFormValid = () => {
     const isCompetitorFilled = competitors.every(comp => comp.name && comp.link);
     const isCompetitorLinkValid = competitors.every(comp => comp.link.startsWith('https://') || comp.link.startsWith('http://'));
     const isDateRangeValid = dateRange?.from && dateRange?.to && dateRange.from <= dateRange.to;
+    const areSocialLinksValid =
+      isSocialLinkValid(socialLinks.instagram, 'https://www.instagram.com') &&
+      isSocialLinkValid(socialLinks.facebook, 'https://www.facebook.com') &&
+      isSocialLinkValid(socialLinks.linkedin, 'https://www.linkedin.com') &&
+      isSocialLinkValid(socialLinks.drive, 'https://drive.google.com/drive');
 
     return (
       formData.projectName &&
@@ -62,13 +81,15 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleSubmit }) => {
       formData.transaction &&
       isDateRangeValid &&
       isCompetitorFilled &&
-      isCompetitorLinkValid
+      isCompetitorLinkValid &&
+      areSocialLinksValid
     );
   };
 
   return (
     <form className="mt-4 space-y-4">
-      {/* Project Name */}
+      <div className="max-h-[430px] overflow-y-auto"> 
+         {/* Project Name */}
       <div className="flex flex-col">
         <label htmlFor="projectName" className="mb-1">Project Name</label>
         <Input
@@ -79,7 +100,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleSubmit }) => {
           required
         />
       </div>
-
+      
       {/* Description */}
       <div className="flex flex-col">
         <label htmlFor="description" className="mb-1">Description</label>
@@ -130,19 +151,34 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleSubmit }) => {
         </div>
       </div>
 
-      {/* Project Duration Section */}
-      <div className="flex flex-col">
-        <label className="mb-1">Project Duration</label>
-        <DatePickerWithRange
-          className="w-full"
-          onDateChange={(range: DateRange) => setDateRange(range)}
-        />
+      {/* Project Duration and Investment Section */}
+      <div className="flex space-x-4">
+        <div className="flex flex-col w-full">
+          <label className="mb-1">Project Duration</label>
+          <DatePickerWithRange
+            className="w-full"
+            onDateChange={(range: DateRange) => setDateRange(range)}
+          />
+        </div>
+
+        <div className="flex flex-col w-full">
+          <label htmlFor="investment" className="mb-1">Investment</label>
+          <Input
+            id="investment"
+            name="investment"
+            placeholder="Investment Amount"
+            type="number"
+            value={investment}
+            onChange={(e) => setInvestment(e.target.value)}
+            required
+          />
+        </div>
       </div>
 
       {/* Competitors Section */}
       <div className="flex flex-col border border-gray-300 rounded-md p-4 mt-4">
         <label className="mb-1">Competitors</label>
-        <div className={`flex flex-col space-y-2 ${competitors.length > 2 ? 'max-h-32 overflow-y-auto' : ''}`}>
+        <div className={`flex flex-col space-y-2 ${competitors.length > 2 ? 'max-h-28 overflow-y-auto' : ''}`}>
           {competitors.map((competitor, index) => (
             <div key={index} className="flex space-x-4">
               <Input
@@ -173,9 +209,46 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleSubmit }) => {
         </Button>
       </div>
 
+          {/* Social Links Section */}
+      <div className="flex flex-col border border-gray-300 rounded-md p-4 mt-4">
+        <label className="mb-1">Social Links</label>
+        <div className="space-y-2">
+          <Input
+            id="instagram"
+            name="instagram"
+            placeholder="Instagram Link"
+            value={socialLinks.instagram}
+            onChange={handleSocialLinkChange}
+          />
+          <Input
+            id="facebook"
+            name="facebook"
+            placeholder="Facebook Link"
+            value={socialLinks.facebook}
+            onChange={handleSocialLinkChange}
+          />
+          <Input
+            id="linkedin"
+            name="linkedin"
+            placeholder="LinkedIn Link"
+            value={socialLinks.linkedin}
+            onChange={handleSocialLinkChange}
+          />
+          <Input
+            id="drive"
+            name="drive"
+            placeholder="Google Drive Link"
+            value={socialLinks.drive}
+            onChange={handleSocialLinkChange}
+          />
+        </div>
+      </div>
+      </div>
+     
+
       {/* Submit Button */}
       <div className="flex justify-end mt-4">
-        <Button type="button" className={`bg-purple-500 text-white ${!isFormValid() && 'opacity-50 cursor-not-allowed'}`} disabled={!isFormValid()} onClick={() => handleSubmit({ ...formData, dateRange, competitors })}>
+        <Button type="button" className={`bg-purple-500 text-white ${!isFormValid() && 'opacity-50 cursor-not-allowed'}`} disabled={!isFormValid()} onClick={() => handleSubmit({ ...formData, dateRange, competitors, investment, ...socialLinks })}>
           Submit
         </Button>
       </div>
