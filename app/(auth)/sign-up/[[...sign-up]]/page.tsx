@@ -14,7 +14,7 @@ export default function Page() {
 
         <ClerkLoaded>
           <div className='mt-2'>
-            <SignUp path='/sign-up' />
+            <SignUp fallbackRedirectUrl='/profile' path='/sign-up' />
           </div>
         </ClerkLoaded>
         <ClerkLoading>

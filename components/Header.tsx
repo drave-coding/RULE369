@@ -15,7 +15,7 @@ const Header = () => {
                 </div>
                 
                 <ClerkLoaded>
-                    <UserButton  showName afterSignOutUrl="/"/>
+                    <UserButton showName afterSignOutUrl="/"/>
                 </ClerkLoaded>
                 
                 

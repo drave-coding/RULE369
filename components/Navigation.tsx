@@ -25,6 +25,10 @@ const routes = [
         href:'/plans',
         label:"Plans",
     },
+    {
+        href:'/finance',
+        label:"Fianance",
+    },
     
 ]
 const Navigation = () => {

@@ -48,10 +48,11 @@ const ProjectDetails: React.FC = () => {
 
   return (
     <div className="max-w-screen-2xl mx-auto w-full pl-10 pr-10 pb-10 pt-3">
-       <ProjectTopSection projectId={id} />
+       
        
       {project ? (
         <>
+        <ProjectTopSection projectId={id} />
           <ProjectDetailsGrid1 project={{ projectName: project.projectName, description: project.description }} />
           <ProjectDetailsGrid2 
             project={{
