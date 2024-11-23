@@ -14,8 +14,16 @@ const routes = [
         label:"Projects",
     },
     {
-        href:'/filters',
-        label:"Filters",
+        href:'/audience',
+        label:"Audience",
+    },
+    {
+        href:'/tasks',
+        label:"Tasks",
+    },
+    {
+        href:'/finance',
+        label:"Finance",
     },
     {
         href:'/terms',
@@ -25,10 +33,7 @@ const routes = [
         href:'/plans',
         label:"Plans",
     },
-    {
-        href:'/finance',
-        label:"Fianance",
-    },
+    
     
 ]
 const Navigation = () => {
