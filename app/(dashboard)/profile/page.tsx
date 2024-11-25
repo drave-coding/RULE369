@@ -8,8 +8,8 @@ import axios from "@/lib/axios"; // Import your axios instance
 import { useRouter } from "next/navigation";
 
 const ProfilePage = () => {
-  const { user } = useUser(); // Get user info
-  const router = useRouter(); // For page redirection
+  const { user } = useUser(); 
+  const router = useRouter(); 
   const [isProfileExists, setIsProfileExists] = useState<boolean | null>(null); // Track profile existence (null = loading)
   const [loading, setLoading] = useState<boolean>(true); // To show loading status
 
