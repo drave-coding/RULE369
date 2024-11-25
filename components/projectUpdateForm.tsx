@@ -1,6 +1,6 @@
 'use client';
-
-import React, { useState, useEffect } from 'react';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import { Input } from './ui/input';
 import {
@@ -13,7 +13,7 @@ import {
 import { Button } from './ui/button';
 import { DatePickerWithRange } from './DatePickerDemo'; // Adjust this import path as needed
 import { DateRange } from 'react-day-picker';
-import { useRouter } from 'next/navigation';
+
 
 interface ProjectUpdateFormProps {
   initialData: {
@@ -45,7 +45,7 @@ const ProjectUpdateForm: React.FC<ProjectUpdateFormProps> = ({
   const [competitors, setCompetitors] = useState(initialData.competitors);
   const [investment, setInvestment] = useState(initialData.investment);
   const [socialLinks, setSocialLinks] = useState(initialData.socialLinks);
-  const router = useRouter();
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;

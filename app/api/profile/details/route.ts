@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { connect } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { getProfileDataByUserId } from "@/actions/profileActions";

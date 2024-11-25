@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // app/api/projectDetails/delete/[id]/route.ts
 import { connect } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";

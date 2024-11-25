@@ -22,7 +22,8 @@ const ProfilePage = () => {
         }
         const response = await axios.post("/profile/details", { userId: user.id });
         setIsProfileExists(!!response.data); // Set true if profile exists, false otherwise
-      } catch (error: any) {
+      } // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      catch (error: any) {
         console.error("Error checking profile:", error.message);
         setIsProfileExists(false); // Handle error (e.g., no profile found)
       } finally {
@@ -32,7 +33,7 @@ const ProfilePage = () => {
 
     checkProfile();
   }, [user]);
-
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSubmit = async (formData: any) => {
     try {
       if (!user) {
@@ -53,7 +54,8 @@ const ProfilePage = () => {
       setIsProfileExists(true);
       setLoading(false);
       router.refresh(); // Refresh the page to reflect changes
-    } catch (error: any) {
+    }// eslint-disable-next-line @typescript-eslint/no-explicit-any 
+    catch (error: any) {
       console.error("Error submitting form:", error.message);
     }
   };

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { connect } from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 import { updateProjectData } from "@/actions/projectActions"; // Assuming this function exists

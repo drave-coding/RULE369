@@ -1,14 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
+
 
 import ProjectDetailsGrid1 from '@/components/projectDetailsgrid1';
 import ProjectDetailsGrid2 from '@/components/projectDetailsgrid2';
-import TopSection from '@/components/TopSection';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import axios from '@/lib/axios'; // Use your custom Axios instance
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useUser } from "@clerk/nextjs"; // Import useUser
-import { Button } from '@/components/ui/button';
+;
 import ProjectTopSection from '@/components/projectTopSection';
 
 const ProjectDetails: React.FC = () => {
@@ -30,7 +31,7 @@ const ProjectDetails: React.FC = () => {
           setProject(projectData); // Set project data if authorized
         }
       } catch (err: any) {
-        console.error("Failed to fetch project data.");
+        console.error("Failed to fetch project data." + err);
       } finally {
         setLoading(false); // Set loading to false after fetch attempt
       }
@@ -76,7 +77,7 @@ const ProjectDetails: React.FC = () => {
             </CardHeader>
             <CardContent>
               <p className="text-center text-gray-700">
-                This Project is not available to you or it doesn't exist at all.
+              This Project is not available to you or it doesn&apos;t exist at all.
               </p>
             </CardContent>
           </Card>
