@@ -28,7 +28,6 @@ export const storeProjectData = async (projectData: any) => {
   }
 };
 
-
 export const getProjectData = async (projectId: string) => {
   try {
     const project = await Project.findById(projectId).exec(); // Fetch the project by ID
@@ -37,8 +36,6 @@ export const getProjectData = async (projectId: string) => {
     throw new Error("Error fetching project data: " + error.message);
   }
 }
-
-
 // New delete function to delete the project
 export const deleteProjectData = async (projectId: string) => {
   try {
@@ -49,9 +46,6 @@ export const deleteProjectData = async (projectId: string) => {
   }
 };
 
-
-
-
 //update project data
 export const updateProjectData = async (projectId: string, updatedData: any) => {
   try {
@@ -60,5 +54,17 @@ export const updateProjectData = async (projectId: string, updatedData: any) => 
     return updatedProject; // Return the updated project data
   } catch (error: any) {
     throw new Error("Error updating project data: " + error.message);
+  }
+};
+
+export const getProjectsByUserId = async (userId: string) => {
+  try {
+    // Query to find all projects for the given userId
+    const projects = await Project.find({ userId }, "projectName _id").exec();
+
+    // Return the filtered project data
+    return projects;
+  } catch (error: any) {
+    throw new Error("Error fetching projects by userId: " + error.message);
   }
 };
