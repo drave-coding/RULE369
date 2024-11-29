@@ -113,7 +113,7 @@ export default function SecuritySettings() {
             <section>
               <h2 className="text-xl font-semibold mb-2">Recent devices</h2>
               <p className="text-sm text-muted-foreground mb-2">
-                If you've lost one of your devices or notice any suspicious activity, log out of all your devices and take
+                If you&apos;ve lost one of your devices or notice any suspicious activity, log out of all your devices and take
                 steps to secure your account. Learn more
               </p>
               <Link href="#" className="text-[#8E44AD] hover:underline text-sm">

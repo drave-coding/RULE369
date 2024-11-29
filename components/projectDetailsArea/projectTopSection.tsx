@@ -56,16 +56,16 @@ export const ProjectTopSection: React.FC<{ projectId: string }> = ({ projectId }
     try {
       
       const response = await axios.patch(`/projectDetails/update/${projectId}`, formData);
-      console.log(response.data)
+      
       if (response.data) {
         // Proceed with the parsed JSON if data exists
-        console.log("Update successful:", response.data);
+        console.log("Update successful:");
     } else {
         console.log("Update successful with no data returned");
     }
       if (response.status === 200) {
         // Redirect or handle success
-        console.log(projectId)
+        
         router.push(`/projects/${projectId}`);
         console.log("Project updated successfully.");
       }

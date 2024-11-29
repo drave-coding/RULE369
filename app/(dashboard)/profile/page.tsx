@@ -48,7 +48,7 @@ const ProfilePage = () => {
         ...formData,
       });
 
-      console.log("Profile saved:", response.data);
+      console.log("Profile saved"+response.status);
 
       // Mark profile as existing after submission
       setIsProfileExists(true);

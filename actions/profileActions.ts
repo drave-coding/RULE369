@@ -2,7 +2,7 @@
 import Profile from "@/models/Profile";
 
 export const storeProfileData = async (profileData: any) => {
-  console.log("Profile Data:", profileData); // Log the profile data for debugging
+  console.log("Profile Data Saved"); // Log the profile data for debugging
 
   try {
     const profile = new Profile({

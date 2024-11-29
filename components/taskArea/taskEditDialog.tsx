@@ -1,5 +1,5 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import TaskUpdateForm from "./taskUpdateForm"; // Import the TaskUpdateForm component
@@ -57,14 +57,15 @@ const TaskEditDialog: React.FC<TaskEditDialogProps> = ({ task, onClose, onTaskUp
   const handleFormSubmit = async (formData: any) => {
     setIsUpdating(true); // Set loading state
     try {
-      console.log("Submitting task update:", formData);
-
+      console.log("Submitting task update:"
+      );
+  
       // Make API request to update the task
       await axios.patch("/task/update", {
         taskId: task._id, // Pass taskId
         ...formData, // Include updated task data
       });
-
+  
       console.log("Task updated successfully.");
       onTaskUpdate(); // Refresh tasks on success
     } catch (error: any) {
@@ -82,14 +83,20 @@ const TaskEditDialog: React.FC<TaskEditDialogProps> = ({ task, onClose, onTaskUp
         <DialogHeader>
           <DialogTitle>Edit Task</DialogTitle>
         </DialogHeader>
-
-        {/* Pass the task and projects to the TaskUpdateForm */}
+  
         {projects.length > 0 ? (
-          <TaskUpdateForm task={task} projects={projects} handleSubmit={handleFormSubmit} />
+          <div>
+            <TaskUpdateForm
+              task={task}
+              projects={projects}
+              handleSubmit={handleFormSubmit}
+            />
+            {/* Display a loading message if updating */}
+            {isUpdating && <p className="text-center text-gray-500">Updating task...</p>}
+          </div>
         ) : (
           <p>Loading projects...</p>
         )}
-
       </DialogContent>
     </Dialog>
   );

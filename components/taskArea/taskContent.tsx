@@ -1,6 +1,6 @@
 "use client";
-
-import React, { useState, useEffect } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React, { useState, useEffect, useCallback } from "react";
 import { useUser } from "@clerk/nextjs";
 import axios from "@/lib/axios";
 import {
@@ -48,7 +48,7 @@ const TaskContent: React.FC = () => {
   const [editTask, setEditTask] = useState<Task | null>(null);
   const [deleteTask, setDeleteTask] = useState<Task | null>(null);
 
-  const fetchTasks = async () => {
+  const fetchTasks = useCallback(async () => {
     if (!user) {
       setError("User not authenticated.");
       return;
@@ -76,13 +76,13 @@ const TaskContent: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  },[user]);
 
   useEffect(() => {
     if (user) {
       fetchTasks();
     }
-  }, [user]);
+  }, [user,fetchTasks]);
 
   useEffect(() => {
     const filtered = tasks.filter((task) =>
@@ -172,94 +172,99 @@ const TaskContent: React.FC = () => {
 
       {/* table Section */}
       <div className="max-h-[551px] overflow-y-auto">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead className="w-[150px]">Task</TableHead>
-              <TableHead>Content</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead>Project</TableHead>
-              <TableHead>Deadline</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {filteredTasks.map((task) => (
-              <TableRow key={task._id}>
-                <TableCell className="font-medium hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-                  {task.taskName}
-                </TableCell>
-                <TableCell className="bg-slate-50 rounded-lg hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <div className="truncate max-w-xs">
-                          {task.content.split(" ").slice(0, 6).join(" ")}...
-                        </div>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-gray-100 text-black p-4 rounded-lg shadow-md max-w-[300px]">
-                        <p>{task.content}</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </TableCell>
-                <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-                  <span
-                    className={`px-2 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                      task.status
-                    )}`}
-                  >
-                    {task.status}
-                  </span>
-                </TableCell>
-                <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-                  {task.project.projectName}
-                </TableCell>
-                <TableCell
-                  className={`hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all ${getDeadlineColor(
-                    task.deadline
-                  )}`}
-                >
-                  {new Date(task.deadline).toLocaleDateString()}
-                </TableCell>
-                <TableCell className="text-right">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          className="mr-2"
-                          onClick={() => handleEditTask(task)}
-                        >
-                          <FaEdit className="h-5 w-5 text-primary" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Edit Task</p>
-                      </TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant="outline"
-                          size="sm"
-                          onClick={() => handleDeleteTask(task)}
-                        >
-                          <FaTrashAlt className="h-5 w-5 text-destructive" />
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>Delete Task</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+  {filteredTasks.length > 0 ? (
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead className="w-[150px]">Task</TableHead>
+          <TableHead>Content</TableHead>
+          <TableHead>Status</TableHead>
+          <TableHead>Project</TableHead>
+          <TableHead>Deadline</TableHead>
+          <TableHead className="text-right">Actions</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {filteredTasks.map((task) => (
+          <TableRow key={task._id}>
+            <TableCell className="font-medium hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+              {task.taskName}
+            </TableCell>
+            <TableCell className="bg-slate-50 rounded-lg hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <div className="truncate max-w-xs">
+                      {task.content.split(" ").slice(0, 6).join(" ")}...
+                    </div>
+                  </TooltipTrigger>
+                  <TooltipContent className="bg-gray-100 text-black p-4 rounded-lg shadow-md max-w-[300px]">
+                    <p>{task.content}</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TableCell>
+            <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+              <span
+                className={`px-2 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                  task.status
+                )}`}
+              >
+                {task.status}
+              </span>
+            </TableCell>
+            <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+              {task.project.projectName}
+            </TableCell>
+            <TableCell
+              className={`hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all ${getDeadlineColor(
+                task.deadline
+              )}`}
+            >
+              {new Date(task.deadline).toLocaleDateString()}
+            </TableCell>
+            <TableCell className="text-right">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="mr-2"
+                      onClick={() => handleEditTask(task)}
+                    >
+                      <FaEdit className="h-5 w-5 text-primary" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Edit Task</p>
+                  </TooltipContent>
+                </Tooltip>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={() => handleDeleteTask(task)}
+                    >
+                      <FaTrashAlt className="h-5 w-5 text-destructive" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>Delete Task</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  ) : (
+    <p className="text-center text-gray-500 mt-4">No tasks available.</p>
+  )}
+</div>
+
 
       {/* Task Edit Dialog */}
       {editTask && (

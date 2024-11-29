@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 
 export default function PrivacyPolicy() {
   return (
@@ -14,7 +14,7 @@ export default function PrivacyPolicy() {
             <div>
               <h2 className="text-2xl font-bold mb-4">Privacy</h2>
               <p className="text-gray-700">
-                Because your privacy is important to us, we're transparent about how we collect, use, and share information
+                Because your privacy is important to us, we&apos;re transparent about how we collect, use, and share information
                 about you.
               </p>
             </div>
@@ -24,7 +24,7 @@ export default function PrivacyPolicy() {
               <p className="text-gray-700 mb-4">
                 When you visit an Atlassian product, it may store or retrieve information from your browser, mostly in the
                 form of cookies. This information may be about you, your preferences, or your device, and is mostly used to
-                make the site work as you would expect. The information doesn't usually directly identify you, but it
+                make the site work as you would expect. The information doesn&apos;t usually directly identify you, but it
                 provides a more personalized web experience. We respect your right to privacy, so you can select which
                 cookies you allow.{" "}
                 <Link href="#" className="text-[#4C2A85] hover:underline">

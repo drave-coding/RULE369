@@ -1,18 +1,18 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import { useUser } from "@clerk/nextjs";
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import TaskForm from "./taskForm"; // Import the TaskForm component
 import axios from "@/lib/axios"; // Import your Axios instance
-import { useRouter } from "next/navigation"; // Import useRouter
+
 
 const TaskTopSection: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { user } = useUser(); // Get user info
   const [projects, setProjects] = useState<{ _id: string; projectName: string }[]>([]); // Store projects
-  const router = useRouter(); // Initialize useRouter
+
 
   useEffect(() => {
     // Fetch the user's projects when the component mounts
@@ -47,7 +47,7 @@ const TaskTopSection: React.FC = () => {
         throw new Error("User not authenticated.");
       }
 
-      console.log('Submitting task form:', formData);
+      console.log('Submitting task form:');
       // Include userId in the formData to send to the API
       const response = await axios.post('/task/add', {
         ...formData,
@@ -56,7 +56,7 @@ const TaskTopSection: React.FC = () => {
 
       // Redirect to the task details page (or appropriate page)
       window.location.reload();
-      console.log('Task saved:', response.data);
+      console.log('Task saved:'+response.status);
     } catch (error: any) {
       console.error('Error submitting task form:', error.response?.data || error.message);
       // Handle error (e.g., display a notification)

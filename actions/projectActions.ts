@@ -2,7 +2,7 @@
 import Project from "@/models/Project";
 
 export const storeProjectData = async (projectData: any) => {
-  console.log("Project Data:", projectData); // Log the project data for debugging
+  console.log("Project Data Saved"); // Log the project data for debugging
 
   try {
     const project = new Project({

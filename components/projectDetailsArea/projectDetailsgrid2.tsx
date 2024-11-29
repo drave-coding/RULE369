@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import axios from "axios";
 
@@ -256,7 +257,7 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({
           {loading ? (
             <p>Loading tasks...</p>
           ) : error ? (
-            <p>{error}</p>
+            <p>There are no Tasks under this project</p>
           ) : (
             <ScrollArea>
               <Table>

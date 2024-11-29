@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { useState } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -41,7 +43,7 @@ const TaskDeleteDialog: React.FC<TaskDeleteDialogProps> = ({ task, onClose }) =>
         <DialogHeader>
           <DialogTitle>Delete Task</DialogTitle>
         </DialogHeader>
-        <p>Are you sure you want to delete the task "{task.taskName}"?</p>
+        <p>Are you sure you want to delete the task &quot;{task.taskName}&quot;?</p>
         <DialogFooter>
           <Button onClick={onClose} disabled={loading}>
             Cancel

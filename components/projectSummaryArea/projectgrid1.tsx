@@ -1,12 +1,12 @@
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import axios from "@/lib/axios"; // Import your Axios instance
 import { useUser } from "@clerk/nextjs"; // Import useUser to get user details
 import { Separator } from "@/components/ui/separator"; // Separator component for styling
-import { Trash2 } from "lucide-react"; // Trash icon for deletion
+
 import {
   Table,
   TableHeader,

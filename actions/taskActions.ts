@@ -1,7 +1,7 @@
 import Task from "@/models/Task";
 
 export const storeTaskData = async (taskData: any) => {
-  console.log("Task Data:", taskData); 
+  console.log("Task Data saved"); 
   // Log the task data for debugging
   try {
     // Create a new Task document

@@ -26,7 +26,7 @@ const TopSection: React.FC = () => {
         throw new Error("User not authenticated.");
       }
 
-      console.log('Submitting form:', formData);
+      console.log('Submitting form:');
       // Include userId in the formData to send to the API
       const response = await axios.post('/projects', {
         ...formData,
@@ -37,7 +37,7 @@ const TopSection: React.FC = () => {
       router.push(`/projects/${response.data._id}`);
 
 
-      console.log('Project saved:', response.data);
+      console.log('Project saved:');
     } catch (error: any) {
       console.error('Error submitting form:', error.response?.data || error.message);
       // Display error notification or message to the user
