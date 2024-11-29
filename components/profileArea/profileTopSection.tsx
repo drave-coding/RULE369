@@ -2,7 +2,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import { FaEdit } from "react-icons/fa";
 import ProfileUpdateForm from "./profileUpdateForm";
 import axios from "@/lib/axios";

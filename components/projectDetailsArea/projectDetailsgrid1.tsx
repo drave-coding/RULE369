@@ -1,6 +1,6 @@
 "use client";
 
-import DataCard from "@/components/DataCard";
+import DataCard from "@/components/extraComponents/DataCard";
 
 interface ProjectDetailsGrid1Props {
   project: { projectName: string; description: string }; // Define project type with only necessary fields
@@ -8,7 +8,7 @@ interface ProjectDetailsGrid1Props {
 
 const ProjectDetailsGrid1: React.FC<ProjectDetailsGrid1Props> = ({ project }) => {
   return (
-    <div className="grid grid-cols-1 mt-2 h-30">
+    <div className="grid grid-cols-1 h-30">
       <DataCard >
         <strong>{project.projectName}</strong>
         <p>{project.description}</p>

@@ -1,4 +1,4 @@
-import Header from "@/components/Header";
+import Header from "@/components/NavArea/Header";
 import SideBar from "@/components/sidebar";
 
 type Props = {

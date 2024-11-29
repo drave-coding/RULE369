@@ -11,7 +11,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from './ui/dialog';
-import ProjectForm from './projectForm';
+import ProjectForm from './projectSummaryArea/projectForm';
 import axios from '@/lib/axios'; // Import your Axios instance
 import { useRouter } from 'next/navigation'; // Import useRouter
 

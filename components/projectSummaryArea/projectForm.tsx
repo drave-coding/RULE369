@@ -2,17 +2,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useState } from 'react';
 import { FaPlus, FaMinus } from 'react-icons/fa';
-import { Input } from './ui/input';
+import { Input } from '../ui/input';
 import {
   Select,
   SelectTrigger,
   SelectValue,
   SelectContent,
   SelectItem,
-} from './ui/select';
-import { Button } from './ui/button';
-import { DatePickerWithRange } from './DatePickerDemo'; // Adjust this import path as needed
+} from '../ui/select';
+import { Button } from '../ui/button';
+// Adjust this import path as needed
 import { DateRange } from 'react-day-picker'; // Import DateRange type
+import { DatePickerWithRange } from '../extraComponents/DatePickerDemo';
 
 interface ProjectFormProps {
   handleSubmit: (formData: any) => void;

@@ -11,7 +11,7 @@ interface ITask extends Document {
   }; // Project field containing ID and Name
   userId: string; // ID of the user who created the task
   deadline: Date; // Task deadline
-}
+} 
 
 // Define the schema for tasks
 const TaskSchema: Schema = new Schema({

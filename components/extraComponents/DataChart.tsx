@@ -1,7 +1,8 @@
 import React from 'react';
-import PieChart from './PieChart';
+
 import BarChart from './BarChart';
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import PieChart from './PieChart';
 
 const DataChart = () => {
   return (

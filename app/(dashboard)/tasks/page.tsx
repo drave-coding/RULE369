@@ -1,5 +1,5 @@
-import TaskContent from '@/components/taskContent'
-import TaskTopSection from '@/components/taskTopSection'
+import TaskContent from '@/components/taskArea/taskContent'
+import TaskTopSection from '@/components/taskArea/taskTopSection'
 import React from 'react'
 const ProjectSummary = () => {
   return (

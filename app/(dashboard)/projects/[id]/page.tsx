@@ -2,15 +2,15 @@
 "use client";
 
 
-import ProjectDetailsGrid1 from '@/components/projectDetailsgrid1';
-import ProjectDetailsGrid2 from '@/components/projectDetailsgrid2';
+import ProjectDetailsGrid1 from '@/components/projectDetailsArea/projectDetailsgrid1';
+import ProjectDetailsGrid2 from '@/components/projectDetailsArea/projectDetailsgrid2';
 import { useParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 import axios from '@/lib/axios'; // Use your custom Axios instance
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { useUser } from "@clerk/nextjs"; // Import useUser
 ;
-import ProjectTopSection from '@/components/projectTopSection';
+import ProjectTopSection from '@/components/projectDetailsArea/projectTopSection';
 
 const ProjectDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>(); // Get the project ID from the URL
@@ -23,7 +23,7 @@ const ProjectDetails: React.FC = () => {
       try {
         const response = await axios.get(`/projectDetails/${id}`); // Make sure this matches your API route
         const projectData = response.data;
-        console.log(projectData)
+        
         // Check if the userId from the project matches the authenticated user's ID
         if (projectData.userId !== user?.id) {
           setProject(null); // Set project to null if not authorized
@@ -63,6 +63,9 @@ const ProjectDetails: React.FC = () => {
               competitors: project.competitors,
               investment: project.investment,
               socialLinks: project.socialLinks,
+              userId: project.userId,
+              _id:project._id,
+              
               
             }} 
           />

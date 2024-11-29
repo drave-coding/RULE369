@@ -5,10 +5,10 @@
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useUser } from "@clerk/nextjs";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "./ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "../ui/dialog";
 import axios from "@/lib/axios";
 import { useRouter } from "next/navigation";
-import { ProjectUpdateForm } from "./projectUpdateForm";
+import { ProjectUpdateForm } from "../projectSummaryArea/projectUpdateForm";
 
 
 export const ProjectTopSection: React.FC<{ projectId: string }> = ({ projectId }) => {
@@ -75,7 +75,7 @@ export const ProjectTopSection: React.FC<{ projectId: string }> = ({ projectId }
   };
 
   return (
-    <div className="flex flex-col w-full h-[66.67%] rounded-lg pb-12">
+    <div className="flex flex-col w-full h-[66.67%] rounded-lg pb-6">
       <div className="flex justify-between items-center">
         <div></div>
         <div className="flex gap-4">

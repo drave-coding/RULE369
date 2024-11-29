@@ -21,10 +21,7 @@ const routes = [
         href:'/tasks',
         label:"Tasks",
     },
-    {
-        href:'/finance',
-        label:"Finance",
-    },
+    
     {
         href:'/terms',
         label:"Terms",

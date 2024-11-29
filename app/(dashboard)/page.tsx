@@ -1,5 +1,6 @@
-import DataChart from "@/components/DataChart";
-import { Datagrid } from "@/components/dataGrid";
+
+import DataChart from "@/components/extraComponents/DataChart";
+import { Datagrid } from "@/components/extraComponents/dataGrid";
 import TopSection from "@/components/TopSection";
 
 

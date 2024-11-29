@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { MultiSelect } from "./ui/multi-select";
+import { MultiSelect } from "../ui/multi-select";
 
 interface ProfileFormProps {
   handleSubmit: (formData: any) => void;

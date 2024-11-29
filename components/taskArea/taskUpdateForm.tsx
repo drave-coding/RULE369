@@ -1,39 +1,56 @@
 "use client";
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { DatePickerDemo } from "./datePicker"; // Assuming the DatePickerDemo is reused for the date picker
+import { DatePickerDemo } from "../extraComponents/datePicker";
+; // Assuming the DatePickerDemo is reused for the date picker
 
-interface TaskFormProps {
-  projects: { _id: string; projectName: string }[]; // List of projects to display in the dropdown
-  userId: string; // User ID passed as a prop
-  onSubmit: (formData: any) => void; // Handler function for form submission
+interface Task {
+  _id: string;
+  taskName: string;
+  content: string;
+  status: string;
+  project: {
+    projectId: string;
+    projectName: string;
+  };
+  userId: string;
+  deadline: string;
 }
 
-const TaskForm: React.FC<TaskFormProps> = ({ projects, userId, onSubmit }) => {
-  const [taskName, setTaskName] = useState<string>("");
-  const [content, setContent] = useState<string>("");
-  const [status, setStatus] = useState<string>("Ongoing");
-  const [selectedProjectId, setSelectedProjectId] = useState<string>(""); // Store only the selected projectId
-  const [selectedProject, setSelectedProject] = useState<{ _id: string; projectName: string } | null>(null); // Store the selected project object
-  const [deadline, setDeadline] = useState<Date | undefined>(undefined);
+interface TaskUpdateFormProps {
+  task: Task;
+  projects: { _id: string; projectName: string }[];
+  handleSubmit: (formData: any) => void;
+}
+
+const TaskUpdateForm: React.FC<TaskUpdateFormProps> = ({ task, projects, handleSubmit }) => {
+  const [taskName, setTaskName] = useState<string>(task.taskName || "");
+  const [content, setContent] = useState<string>(task.content || "");
+  const [status, setStatus] = useState<string>(task.status || "Ongoing");
+  const [selectedProjectId, setSelectedProjectId] = useState<string>(task.project.projectId || "");
+  const [selectedProject, setSelectedProject] = useState<{ _id: string; projectName: string } | null>(
+    projects.find((p) => p._id === task.project.projectId) || null
+  );
+  const [deadline, setDeadline] = useState<Date | undefined>(
+    task.deadline ? new Date(task.deadline) : undefined
+  );
 
   const handleStatusChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setStatus(event.target.value);
   };
 
   const handleProjectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const projectName = event.target.value;
-    setSelectedProjectId(projectName);
+    const projectId = event.target.value;
+    setSelectedProjectId(projectId);
 
-    // Find the selected project from the list based on the projectId
-    const project = projects.find((project) => project.projectName === projectName);
-
-    // Set the selected project
-    setSelectedProject(project || null); // Set the entire project object
+    const project = projects.find((p) => p._id === projectId);
+    setSelectedProject(project || null);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!taskName || !content || !status || !selectedProject || !deadline) {
@@ -42,22 +59,23 @@ const TaskForm: React.FC<TaskFormProps> = ({ projects, userId, onSubmit }) => {
     }
 
     const formData = {
+      taskId: task._id,
       taskName,
       content,
       status,
       project: {
-        projectId: selectedProject._id, // Pass the correct projectId
-        projectName: selectedProject.projectName, // Pass the project name
+        projectId: selectedProject._id,
+        projectName: selectedProject.projectName,
       },
-      userId,
+      userId: task.userId,
       deadline: deadline.toISOString(),
     };
 
-    onSubmit(formData); // Pass the form data to the onSubmit handler
+    handleSubmit(formData);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={onSubmit}>
       <div className="mb-4">
         <label htmlFor="taskName" className="block text-sm font-medium">
           Task Name
@@ -107,15 +125,15 @@ const TaskForm: React.FC<TaskFormProps> = ({ projects, userId, onSubmit }) => {
         </label>
         <select
           id="project"
-          value={selectedProjectId} // Use selectedProjectId to control the dropdown
+          value={selectedProjectId}
           onChange={handleProjectChange}
           required
           className="w-full p-2 border border-gray-300 rounded"
         >
           <option value="">Select a project</option>
           {projects.map((project) => (
-            <option key={project._id} value={project.projectName}>
-              {project.projectName} 
+            <option key={project._id} value={project._id}>
+              {project.projectName}
             </option>
           ))}
         </select>
@@ -129,10 +147,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ projects, userId, onSubmit }) => {
       </div>
 
       <div className="mt-4">
-        <Button type="submit">Create Task</Button>
+        <Button type="submit">Update Task</Button>
       </div>
     </form>
   );
 };
 
-export default TaskForm;
+export default TaskUpdateForm;

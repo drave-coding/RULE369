@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { FaPlus } from "react-icons/fa";
 import { useUser } from "@clerk/nextjs";
-import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "./ui/dialog";
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle } from "../ui/dialog";
 import TaskForm from "./taskForm"; // Import the TaskForm component
 import axios from "@/lib/axios"; // Import your Axios instance
 import { useRouter } from "next/navigation"; // Import useRouter
@@ -55,7 +55,7 @@ const TaskTopSection: React.FC = () => {
       });
 
       // Redirect to the task details page (or appropriate page)
-      router.refresh;
+      window.location.reload();
       console.log('Task saved:', response.data);
     } catch (error: any) {
       console.error('Error submitting task form:', error.response?.data || error.message);

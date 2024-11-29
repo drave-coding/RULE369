@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import ProfileForm from "@/components/profileForm";
-import ProfileDetails from "@/components/profileDetails";
+import ProfileForm from "@/components/profileArea/profileForm";
+import ProfileDetails from "@/components/profileArea/profileDetails";
 import { useUser } from "@clerk/nextjs";
 import axios from "@/lib/axios"; // Import your axios instance
 import { useRouter } from "next/navigation";

@@ -50,3 +50,19 @@ export const updateTaskData = async (taskId: string, updatedData: any) => {
       throw new Error("Error fetching tasks: " + error.message);
     }
   };
+
+  export const getAllTasksByUserIdAndProjectId = async (
+    userId: string,
+    projectId: string
+  ) => {
+    try {
+      const tasks = await Task.find({
+        userId,
+        "project.projectId": projectId,
+      }).exec();
+      return tasks; // Return all tasks for the given user and project
+    } catch (error: any) {
+      throw new Error("Error fetching tasks: " + error.message);
+    }
+  };
+  
