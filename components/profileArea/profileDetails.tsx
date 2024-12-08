@@ -64,9 +64,9 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ userId }) => {
         <ProfileTopSection profile={profile} />
       </div>
 
-      <div className="p-4 max-w-[1200px] rounded-xl mx-auto bg-slate-50">
+      <div className="max-h-[575px] overflow-y-auto p-4 max-w-[1200px] rounded-xl mx-auto bg-slate-50">
         {/* Profile Page Section */}
-        <div className="border border-gray-300 rounded-lg p-6 mb-4 max-w-[900px] mx-auto flex items-center space-x-6">
+        <div className=" border border-gray-300 rounded-lg p-6 mb-4 max-w-[900px] mx-auto flex items-center space-x-6">
           {/* Profile Picture */}
           <div className="w-28 h-24">
             <UserButton

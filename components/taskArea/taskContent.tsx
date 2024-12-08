@@ -171,7 +171,7 @@ const TaskContent: React.FC = () => {
       </div>
 
       {/* table Section */}
-      <div className="max-h-[551px] overflow-y-auto">
+      <div className="max-h-[450px] overflow-y-auto">
   {filteredTasks.length > 0 ? (
     <Table>
       <TableHeader>
