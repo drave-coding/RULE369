@@ -3,9 +3,9 @@
 import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import axios from "@/lib/axios"; // Import your Axios instance
-import { useUser } from "@clerk/nextjs"; // Import useUser to get user details
-import { Separator } from "@/components/ui/separator"; // Separator component for styling
+import axios from "@/lib/axios";
+import { useUser } from "@clerk/nextjs";
+import { Separator } from "@/components/ui/separator";
 
 import {
   Table,
@@ -14,85 +14,70 @@ import {
   TableRow,
   TableHead,
   TableCell,
-} from "@/components/ui/table"; // Assuming these UI components exist
+} from "@/components/ui/table";
 
 const ProjectGrid1 = () => {
   const [projects, setProjects] = useState<
     { _id: string; projectName: string }[]
-  >([]); // Store projects
+  >([]);
   const [tasks, setTasks] = useState<
     { _id: string; taskName: string; status: string; deadline: string }[]
-  >([]); // Store tasks
-  const [loading, setLoading] = useState<boolean>(true);
+  >([]);
+  const [loadingProjects, setLoadingProjects] = useState<boolean>(true);
+  const [loadingTasks, setLoadingTasks] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { user } = useUser(); // Get user info
+  const { user } = useUser();
 
   useEffect(() => {
-    // Fetch the user's projects when the component mounts
     const fetchProjects = async () => {
+      setLoadingProjects(true);
       try {
-        if (!user) {
-          throw new Error("User not authenticated.");
-        }
+        if (!user) throw new Error("User not authenticated.");
 
         const response = await axios.post("/projects/allDetails", {
-          userId: user.id, // Send user ID to the server
+          userId: user.id,
         });
-
-        setProjects(response.data); // Set projects from the response
+        setProjects(response.data || []);
       } catch (error: any) {
-        console.error(
-          "Error fetching projects:",
-          error.response?.data || error.message
-        );
-        // Handle error (e.g., display a notification)
+        console.error("Error fetching projects:", error.response?.data || error.message);
+        setError(error.message || "Failed to fetch projects.");
+      } finally {
+        setLoadingProjects(false);
       }
     };
 
-    // Fetch tasks (reminders)
     const fetchTasks = async () => {
-      setLoading(true);
-      setError(null);
-
+      setLoadingTasks(true);
       try {
-        if (!user) {
-          throw new Error("User not authenticated.");
-        }
+        if (!user) throw new Error("User not authenticated.");
 
         const response = await axios.post("/task/taskList", {
-          userId: user.id, // Send user ID to the server
+          userId: user.id,
         });
 
         if (response.status === 200) {
-          const data = response.data;
-
-          // Sorting tasks by deadline
-          const sortedTasks = data.sort((a: any, b: any) => {
+          const sortedTasks = (response.data || []).sort((a: any, b: any) => {
             const dateA = new Date(a.deadline).getTime();
             const dateB = new Date(b.deadline).getTime();
             return dateA - dateB;
           });
-
-          setTasks(sortedTasks); // Set tasks (reminders) from the response
+          setTasks(sortedTasks);
         } else {
-          setError(response.data.error || "Failed to fetch tasks");
+          setError(response.data.error || "Failed to fetch tasks.");
         }
       } catch (error: any) {
-        console.error(
-          "Error fetching tasks:",
-          error.response?.data || error.message
-        );
-        setError(error.message || "An error occurred while fetching tasks");
+        console.error("Error fetching tasks:", error.response?.data || error.message);
+        setError(error.message || "Failed to fetch tasks.");
       } finally {
-        setLoading(false);
+        setLoadingTasks(false);
       }
     };
 
     if (user) {
-      fetchProjects(); // Fetch projects if user is authenticated
-      fetchTasks(); // Fetch tasks (reminders) if user is authenticated
+      fetchProjects();
+      fetchTasks();
     }
-  }, [user]);
+  }, [user, error]);
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -114,20 +99,20 @@ const ProjectGrid1 = () => {
     const diffDays = diffTime / (1000 * 60 * 60 * 24);
 
     if (diffDays >= 30) {
-      return "text-green-500"; // 1 month or more
+      return "text-green-500";
     } else if (diffDays < 30 && diffDays >= 15) {
-      return "text-yellow-500"; // Less than 15 days
+      return "text-yellow-500";
     } else if (diffDays < 15 && diffDays >= 3) {
-      return "text-yellow-500"; // Less than 15 days (same as above)
+      return "text-yellow-500";
     } else if (diffDays < 3 && diffDays >= 0) {
-      return "text-red-500"; // Less than 3 days
+      return "text-red-500";
     } else {
-      return "line-through text-gray-500"; // Passed deadlines
+      return "line-through text-gray-500";
     }
   };
 
   return (
-    <div className="space-y-4 ">
+    <div className="space-y-4">
       {/* Projects Scroll Area */}
       <div className="bg-white p-4 rounded-lg shadow-lg max-h-[300px]">
         <div className="mb-2">
@@ -135,13 +120,19 @@ const ProjectGrid1 = () => {
         </div>
         <ScrollArea className="h-60 overflow-y-auto">
           <div className="space-y-2">
-            {projects.map((project) => (
-              <Link key={project._id} href={`/projects/${project._id}`}>
-                <button className="w-full text-center font-bold px-4 py-2 rounded-lg hover:bg-gray-200 transition border border-gray-100 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                  {project.projectName}
-                </button>
-              </Link>
-            ))}
+            {loadingProjects ? (
+              <p className="text-center text-gray-500">Loading projects...</p>
+            ) : projects.length === 0 ? (
+              <p className="text-center text-gray-500">No projects available.</p>
+            ) : (
+              projects.map((project) => (
+                <Link key={project._id} href={`/projects/${project._id}`}>
+                  <button className="w-full text-center font-bold px-4 py-2 rounded-lg hover:bg-gray-200 transition border border-gray-100 shadow-sm hover:shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    {project.projectName}
+                  </button>
+                </Link>
+              ))
+            )}
           </div>
         </ScrollArea>
       </div>
@@ -150,11 +141,9 @@ const ProjectGrid1 = () => {
       <div className="shadow-lg h-[250px] bg-white p-4 rounded-lg">
         <div className="flex items-center justify-between mb-2">
           <h3 className="text-lg font-semibold">Reminders</h3>
-
-          {/* Bell with Tooltip and Jingle Animation */}
           <div
             className="relative flex items-center justify-center w-8 h-8 rounded-full bg-gray-200 hover:bg-gray-300 cursor-pointer group transition-transform hover:rotate-6"
-            onClick={() => (window.location.href = "/tasks")} // Redirect to /tasks page
+            onClick={() => (window.location.href = "/tasks")}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -170,7 +159,6 @@ const ProjectGrid1 = () => {
                 d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6 6 0 10-12 0v3.159c0 .538-.214 1.055-.595 1.437L4 17h5m6 0a3 3 0 11-6 0m6 0H9"
               />
             </svg>
-            {/* Tooltip */}
             <span className="absolute bottom-[110%] left-1/2 -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity">
               View More
             </span>
@@ -178,10 +166,10 @@ const ProjectGrid1 = () => {
         </div>
         <ScrollArea className="h-[180px] overflow-y-auto">
           <div className="space-y-2">
-            {loading ? (
-              <p>Loading tasks...</p>
-            ) : error ? (
-              <p>{error}</p>
+            {loadingTasks ? (
+              <p className="text-center text-gray-500">Loading tasks...</p>
+            ) : tasks.length === 0 ? (
+              <p className="text-center text-gray-500">No tasks available.</p>
             ) : (
               <Table>
                 <TableHeader>

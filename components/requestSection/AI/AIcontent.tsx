@@ -151,7 +151,7 @@ const AIContent: React.FC = () => {
             </div>
           ))
         ) : (
-          <p className="text-center text-gray-500 mt-4">No requests available.</p>
+          <p className="text-center text-gray-500 mt-4">Wait Till We Load....</p>
         )}
       </div>
 

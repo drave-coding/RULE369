@@ -62,27 +62,38 @@ const TaskContent: React.FC = () => {
         userId: user.id,
       });
 
-      const sortedTasks = response.data.sort((a: Task, b: Task) => {
-        const dateA = new Date(a.deadline).getTime();
-        const dateB = new Date(b.deadline).getTime();
-        return dateA - dateB;
-      });
+      if (response.status === 200 && Array.isArray(response.data) && response.data.length > 0) {
+        const sortedTasks = response.data.sort((a: Task, b: Task) => {
+          const dateA = new Date(a.deadline).getTime();
+          const dateB = new Date(b.deadline).getTime();
+          return dateA - dateB;
+        });
 
-      setTasks(sortedTasks);
-      setFilteredTasks(sortedTasks);
+        setTasks(sortedTasks);
+        setFilteredTasks(sortedTasks);
+      } else {
+        setTasks([]);
+        setFilteredTasks([]);
+      }
     } catch (error: any) {
       console.error("Error fetching tasks:", error.response?.data || error.message);
-      setError(error.message || "Failed to fetch tasks");
+
+      if (error.response?.status === 404) {
+        setTasks([]);
+        setFilteredTasks([]);
+      } else {
+        setError(error.message || "Failed to fetch tasks");
+      }
     } finally {
       setLoading(false);
     }
-  },[user]);
+  }, [user]);
 
   useEffect(() => {
     if (user) {
       fetchTasks();
     }
-  }, [user,fetchTasks]);
+  }, [user, fetchTasks]);
 
   useEffect(() => {
     const filtered = tasks.filter((task) =>
@@ -90,13 +101,9 @@ const TaskContent: React.FC = () => {
       (statusFilter === "All" || task.status.toLowerCase() === statusFilter.toLowerCase())
     );
 
-    // Sort the tasks only if the filter is not "All"
     const sorted = statusFilter === "All" ? filtered : sortTasksByStatus(filtered, ["completed", "ongoing", "stopped"]);
     setFilteredTasks(sorted);
   }, [searchQuery, statusFilter, tasks]);
-
-  if (loading) return <p>Loading tasks...</p>;
-  if (error) return <p>{error}</p>;
 
   const sortTasksByStatus = (tasksToSort: Task[], statusOrder: string[]) => {
     return tasksToSort.sort((a, b) => {
@@ -145,126 +152,138 @@ const TaskContent: React.FC = () => {
       return "line-through text-gray-500";
     }
   };
+
   return (
     <div className="max-w-[1400px] bg-slate-50 rounded-lg p-4 -mt-8">
-      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-4">
-        <Input
-          placeholder="Search by task name..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="max-w-md"
-        />
-        <Select
-          onValueChange={(value) => setStatusFilter(value)}
-          value={statusFilter}
-        >
-          <SelectTrigger className="w-full max-w-[200px]">
-            <SelectValue placeholder="Filter by status" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="All">All</SelectItem>
-            <SelectItem value="stopped">Stopped</SelectItem>
-            <SelectItem value="ongoing">Ongoing</SelectItem>
-            <SelectItem value="completed">Completed</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
+      {loading ? (
+        <p>Loading tasks...</p>
+      ) : (
+        <>
+          {error && <p className="text-red-500">{error}</p>}
 
-      {/* table Section */}
-      <div className="max-h-[450px] overflow-y-auto">
-  {filteredTasks.length > 0 ? (
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead className="w-[150px]">Task</TableHead>
-          <TableHead>Content</TableHead>
-          <TableHead>Status</TableHead>
-          <TableHead>Project</TableHead>
-          <TableHead>Deadline</TableHead>
-          <TableHead className="text-right">Actions</TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody>
-        {filteredTasks.map((task) => (
-          <TableRow key={task._id}>
-            <TableCell className="font-medium hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-              {task.taskName}
-            </TableCell>
-            <TableCell className="bg-slate-50 rounded-lg hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <div className="truncate max-w-xs">
-                      {task.content.split(" ").slice(0, 6).join(" ")}...
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-gray-100 text-black p-4 rounded-lg shadow-md max-w-[300px]">
-                    <p>{task.content}</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </TableCell>
-            <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-              <span
-                className={`px-2 py-1 rounded-full text-sm font-medium ${getStatusColor(
-                  task.status
-                )}`}
-              >
-                {task.status}
-              </span>
-            </TableCell>
-            <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
-              {task.project.projectName}
-            </TableCell>
-            <TableCell
-              className={`hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all ${getDeadlineColor(
-                task.deadline
-              )}`}
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-4">
+            <Input
+              placeholder="Search by task name..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="max-w-md"
+            />
+            <Select
+              onValueChange={(value) => setStatusFilter(value)}
+              value={statusFilter}
             >
-              {new Date(task.deadline).toLocaleDateString()}
-            </TableCell>
-            <TableCell className="text-right">
-              <TooltipProvider>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="mr-2"
-                      onClick={() => handleEditTask(task)}
-                    >
-                      <FaEdit className="h-5 w-5 text-primary" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Edit Task</p>
-                  </TooltipContent>
-                </Tooltip>
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => handleDeleteTask(task)}
-                    >
-                      <FaTrashAlt className="h-5 w-5 text-destructive" />
-                    </Button>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>Delete Task</p>
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-  ) : (
-    <p className="text-center text-gray-500 mt-4">No tasks available.</p>
-  )}
-</div>
+              <SelectTrigger className="w-full max-w-[200px]">
+                <SelectValue placeholder="Filter by status" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="All">All</SelectItem>
+                <SelectItem value="stopped">Stopped</SelectItem>
+                <SelectItem value="ongoing">Ongoing</SelectItem>
+                <SelectItem value="completed">Completed</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
 
+          {/* Table Section */}
+          <div className="max-h-[450px] overflow-y-auto">
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[150px]">Task</TableHead>
+                  <TableHead>Content</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Project</TableHead>
+                  <TableHead>Deadline</TableHead>
+                  <TableHead className="text-right">Actions</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {filteredTasks.length > 0 ? (
+                  filteredTasks.map((task) => (
+                    <TableRow key={task._id}>
+                      <TableCell className="font-medium hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+                        {task.taskName}
+                      </TableCell>
+                      <TableCell className="bg-slate-50 rounded-lg hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div className="truncate max-w-xs">
+                                {task.content.split(" ").slice(0, 6).join(" ")}...
+                              </div>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-gray-100 text-black p-4 rounded-lg shadow-md max-w-[300px]">
+                              <p>{task.content}</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableCell>
+                      <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+                        <span
+                          className={`px-2 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                            task.status
+                          )}`}
+                        >
+                          {task.status}
+                        </span>
+                      </TableCell>
+                      <TableCell className="hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all">
+                        {task.project.projectName}
+                      </TableCell>
+                      <TableCell
+                        className={`hover:shadow-md hover:rounded-lg hover:bg-gray-50 transition-all ${getDeadlineColor(
+                          task.deadline
+                        )}`}
+                      >
+                        {new Date(task.deadline).toLocaleDateString()}
+                      </TableCell>
+                      <TableCell className="text-right">
+                        <TooltipProvider>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                className="mr-2"
+                                onClick={() => handleEditTask(task)}
+                              >
+                                <FaEdit className="h-5 w-5 text-primary" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Edit Task</p>
+                            </TooltipContent>
+                          </Tooltip>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => handleDeleteTask(task)}
+                              >
+                                <FaTrashAlt className="h-5 w-5 text-destructive" />
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent>
+                              <p>Delete Task</p>
+                            </TooltipContent>
+                          </Tooltip>
+                        </TooltipProvider>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={6} className="text-center text-gray-500">
+                      No tasks available.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </>
+      )}
 
       {/* Task Edit Dialog */}
       {editTask && (
