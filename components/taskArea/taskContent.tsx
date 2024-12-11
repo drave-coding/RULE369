@@ -71,6 +71,7 @@ const TaskContent: React.FC = () => {
 
         setTasks(sortedTasks);
         setFilteredTasks(sortedTasks);
+
       } else {
         setTasks([]);
         setFilteredTasks([]);

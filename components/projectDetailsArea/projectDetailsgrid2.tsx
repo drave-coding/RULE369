@@ -51,6 +51,9 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [audiences, setAudiences] = useState<any[]>([]);
+  const [loadingAudiences, setLoadingAudiences] = useState<boolean>(true);
+  const [errorAudiences, setErrorAudiences] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchTasks = async () => {
@@ -90,6 +93,44 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({
 
     fetchTasks();
   }, [project.userId, project._id]);
+
+  useEffect(() => {
+    const fetchAudiences = async () => {
+      setLoadingAudiences(true);
+      setErrorAudiences(null);
+
+      try {
+        const response = await axios.post(
+          "/api/audience/audienceListForProject",
+          {
+            userId: project.userId,
+            projectId: project._id,
+          }
+        );
+
+        if (response.status === 200) {
+          setAudiences(response.data);
+        } else {
+          setErrorAudiences(
+            response.data.message || "Failed to fetch audiences"
+          );
+        }
+      } catch (error: any) {
+        console.error(
+          "Error fetching audiences:",
+          error.response?.data || error.message
+        );
+        setErrorAudiences(
+          error.message || "An error occurred while fetching audiences"
+        );
+      } finally {
+        setLoadingAudiences(false);
+      }
+    };
+
+    fetchAudiences();
+  }, [project.userId, project._id]);
+  console.log(audiences);
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {
@@ -215,8 +256,51 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({
               <div className="flex gap-4 pt-8">{renderSocialLinks()}</div>
             </DataCard>
           </div>
-          <div className="grid h-48 flex-1">
-            <DataCard title="Card 2">{/* Intentionally left blank */}</DataCard>
+
+          <div className="grid h-[197px] flex-1 bg-slate-50 p-4 rounded-lg">
+            {/* Audience Section Header */}
+            <div className="flex items-center justify-between ">
+              <h2 className="text-lg font-semibold">Audience</h2>
+              {/* Profile Emoji to Redirect to Audience Page */}
+              <div
+                className="relative flex items-center justify-center w-6 h-6 rounded-lg bg-gray-200 hover:bg-gray-300 cursor-pointer"
+                onClick={() => (window.location.href = "/audience")} // Redirect to audience page
+              >
+                <span className="text-l">➕</span> {/* Profile Emoji */}
+              </div>
+            </div>
+
+            {/* Audience Table */}
+            <ScrollArea className="max-h-[290px] overflow-y-auto">
+              <div>
+                {loadingAudiences ? (
+                  <p>Loading audiences...</p>
+                ) : errorAudiences ? (
+                  <p>No audiences found under this project</p>
+                ) : (
+                  <ScrollArea>
+                    <Table>
+                      <TableHeader>
+                        <TableRow>
+                          <TableHead>Title</TableHead>
+                          <TableHead>Category</TableHead>
+                          <TableHead>Phone Number</TableHead>
+                        </TableRow>
+                      </TableHeader>
+                      <TableBody>
+                        {audiences.map((audience: any) => (
+                          <TableRow key={audience._id}>
+                            <TableCell>{audience.title}</TableCell>
+                            <TableCell>{audience.category}</TableCell>
+                            <TableCell>{audience.phoneNumber}</TableCell>
+                          </TableRow>
+                        ))}
+                      </TableBody>
+                    </Table>
+                  </ScrollArea>
+                )}
+              </div>
+            </ScrollArea>
           </div>
         </div>
       </div>

@@ -8,6 +8,7 @@ import { FaTrashAlt } from "react-icons/fa";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 
+
 interface RequestAI {
   _id: string;
   content: string;
@@ -107,6 +108,7 @@ const AIContent: React.FC = () => {
   };
 
   return (
+    
     <div className="max-w-[1200px] bg-slate-50 rounded-lg p-4 -mt-8 max-h-[500px] overflow-y-auto">
       <div className="space-y-4">
         {requests.length > 0 ? (
