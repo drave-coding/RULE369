@@ -62,7 +62,6 @@ const AudienceContent: React.FC = () => {
       if (response.status === 200 && Array.isArray(response.data) && response.data.length > 0) {
         setAudience(response.data);
         setFilteredAudience(response.data);
-        console.log(response.data);
       } else {
         setAudience([]);
         setFilteredAudience([]);

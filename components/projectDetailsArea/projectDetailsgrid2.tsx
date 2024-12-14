@@ -130,7 +130,7 @@ const ProjectDetailsGrid2: React.FC<ProjectDetailsGrid2Props> = ({
 
     fetchAudiences();
   }, [project.userId, project._id]);
-  console.log(audiences);
+
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {

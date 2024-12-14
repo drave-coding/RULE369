@@ -40,7 +40,7 @@ const ProfilePage = () => {
         throw new Error("User not authenticated.");
       }
 
-      console.log("Submitting form:", formData);
+      console.log("Submitting form:");
 
       // Include userId in the formData to send to the API
       const response = await axios.post("/profile/add", {
