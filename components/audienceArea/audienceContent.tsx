@@ -62,6 +62,7 @@ const AudienceContent: React.FC = () => {
       if (response.status === 200 && Array.isArray(response.data) && response.data.length > 0) {
         setAudience(response.data);
         setFilteredAudience(response.data);
+        console.log(response.data);
       } else {
         setAudience([]);
         setFilteredAudience([]);
@@ -72,7 +73,7 @@ const AudienceContent: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  }, [user,error]);
+  }, [user]);
 
   useEffect(() => {
     if (user) {
@@ -94,7 +95,7 @@ const AudienceContent: React.FC = () => {
       window.open(website, "_blank");
     }
   };
-
+  console.log(error);
   return (
     <div className="max-w-[1400px] bg-slate-50 rounded-lg p-4">
       {loading ? (
@@ -112,7 +113,7 @@ const AudienceContent: React.FC = () => {
           </div>
 
           {/* Table Section */}
-          <div className="max-h-[450px] overflow-y-auto">
+          <div className="max-h-[550px] overflow-y-auto">
             <Table>
               <TableHeader>
                 <TableRow>

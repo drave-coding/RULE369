@@ -62,7 +62,7 @@ const ProfilePage = () => {
 
   if (loading || isProfileExists === null) {
     // Show loading spinner while checking profile existence
-    return <div>Loading...</div>;
+    return <div className="col-span-4 bg-slate-50 text-center w-full  p-4  rounded-lg mt-4">Loading...</div>;
   }
 
   return (

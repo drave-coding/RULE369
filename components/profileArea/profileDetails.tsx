@@ -40,15 +40,15 @@ const ProfileDetails: React.FC<ProfileDetailsProps> = ({ userId }) => {
   }, [userId]); // Refetch if userId changes
 
   if (loading) {
-    return <div>Loading profile details...</div>;
+    return <div className="col-span-4 bg-slate-50 text-center w-full  p-4  rounded-lg">Loading profile details...</div>;
   }
 
   if (error) {
-    return <div className="text-red-500">{error}</div>;
+    return <div className="col-span-4 bg-slate-50 text-center w-full  p-4  rounded-lg">{error}</div>;
   }
 
   if (!profile) {
-    return <div>No profile details available.</div>;
+    return <div className="col-span-4 bg-slate-50 text-center w-full  p-4  rounded-lg">No profile details available.</div>;
   }
 
   // Extract first name and last name

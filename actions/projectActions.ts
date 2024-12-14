@@ -68,3 +68,14 @@ export const getProjectsByUserId = async (userId: string) => {
     throw new Error("Error fetching projects by userId: " + error.message);
   }
 };
+export const getStatsProjectByUserId = async (userId: string) => {
+  try {
+    // Query to find all projects for the given userId, and select only the required fields
+    const projects = await Project.find({ userId }, "projectName _id industry transaction investment").exec();
+
+    // Return the filtered project data
+    return projects;
+  } catch (error: any) {
+    throw new Error("Error fetching project stats by userId: " + error.message);
+  }
+};
